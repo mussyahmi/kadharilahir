@@ -23,7 +23,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu, LayoutDashboard, LogOut, PartyPopper } from "lucide-react";
+import Image from "next/image";
+import { Menu, LayoutDashboard, LogOut } from "lucide-react";
 import { toast } from "sonner";
 
 export function Navbar() {
@@ -46,7 +47,7 @@ export function Navbar() {
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 md:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 font-bold text-lg">
-          <PartyPopper className="h-5 w-5 text-pink-500" />
+          <Image src="/logo.png" alt="KadHariLahir" width={20} height={20} />
           <span>KadHariLahir</span>
         </Link>
 
@@ -93,7 +94,7 @@ export function Navbar() {
             <SheetContent side="right" className="w-72">
               <SheetHeader>
                 <SheetTitle className="flex items-center gap-2">
-                  <PartyPopper className="h-5 w-5 text-pink-500" />
+                  <Image src="/logo.png" alt="KadHariLahir" width={20} height={20} />
                   KadHariLahir
                 </SheetTitle>
               </SheetHeader>

@@ -11,6 +11,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "KadHariLahir | Jemputan Hari Lahir Digital",
   description: "Cipta kad jemputan hari lahir digital yang cantik dan kongsi dengan keluarga & rakan.",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
