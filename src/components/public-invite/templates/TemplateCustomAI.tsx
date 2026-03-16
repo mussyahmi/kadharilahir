@@ -212,8 +212,8 @@ export function TemplateCustomAI({ invitation, preview, darkMode }: Props) {
         <RevealOnScroll className={`${sectionCls} px-5 pt-5`} active={liveEntered}>
           <p className="text-xs text-center text-muted-foreground mb-3 font-medium uppercase tracking-wide">{t.goToLocation}</p>
           <div className="grid grid-cols-2 gap-3">
-            <WazeButton lat={invitation.locationLat!} lng={invitation.locationLng!} color={color} />
             <GoogleMapsButton lat={invitation.locationLat!} lng={invitation.locationLng!} color={color} />
+            <WazeButton lat={invitation.locationLat!} lng={invitation.locationLng!} color={color} />
           </div>
         </RevealOnScroll>
       )}

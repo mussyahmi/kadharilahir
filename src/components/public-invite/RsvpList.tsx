@@ -20,9 +20,9 @@ interface Props {
 }
 
 const DUMMY_RSVPS: Rsvp[] = [
-  { id: "p1", guestName: "Ahmad bin Abu Bakar", attending: true, message: "Tahniah! Semoga majlis berjalan lancar!", slotId: undefined, submittedAt: Timestamp.now() },
-  { id: "p2", guestName: "Siti Hajar", attending: true, message: "", slotId: undefined, submittedAt: Timestamp.now() },
-  { id: "p3", guestName: "Razif Hakim", attending: false, message: "Maaf, tidak dapat hadir kali ini.", slotId: undefined, submittedAt: Timestamp.now() },
+  { id: "p1", guestName: "Ahmad bin Abu Bakar", attending: true, pax: 2, message: "Tahniah! Semoga majlis berjalan lancar!", slotId: undefined, submittedAt: Timestamp.now() },
+  { id: "p2", guestName: "Siti Hajar", attending: true, pax: 1, message: "", slotId: undefined, submittedAt: Timestamp.now() },
+  { id: "p3", guestName: "Razif Hakim", attending: false, pax: 0, message: "Maaf, tidak dapat hadir kali ini.", slotId: undefined, submittedAt: Timestamp.now() },
 ];
 
 export function RsvpList({ invitationId, themeColor, slots, preview, language }: Props) {

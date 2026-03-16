@@ -73,6 +73,7 @@ export interface Rsvp {
   id: string;
   guestName: string;
   attending: boolean;
+  pax: number;
   message: string;
   slotId?: string;
   submittedAt: Timestamp;
