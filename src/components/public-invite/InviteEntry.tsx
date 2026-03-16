@@ -131,11 +131,6 @@ export function InviteEntry({ birthdayPerson, color, hasSong, onEnter, language 
           {openBtn}
         </button>
 
-        {hasSong && (
-          <p className="mt-3 text-xs" style={{ color: `${color}60` }}>
-            {musicNote}
-          </p>
-        )}
       </div>
 
       <style>{`
