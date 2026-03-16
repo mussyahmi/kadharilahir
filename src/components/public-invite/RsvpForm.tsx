@@ -13,6 +13,8 @@ import { cn, formatTime } from "@/lib/utils";
 
 const T = {
   ms: {
+    paxLabel: "Bilangan Hadir",
+    paxUnit: "orang",
     closed: "RSVP Ditutup",
     closedDesc: "Tempoh maklum balas untuk majlis ini telah tamat.",
     errAttend: "Sila pilih sama ada anda akan hadir atau tidak.",
@@ -34,6 +36,8 @@ const T = {
     submit: "Hantar Maklum Balas",
   },
   en: {
+    paxLabel: "Number of Guests",
+    paxUnit: "people",
     closed: "RSVP Closed",
     closedDesc: "The response period for this event has ended.",
     errAttend: "Please select whether you will attend or not.",
@@ -76,6 +80,7 @@ export function RsvpForm({ invitationId, themeColor, slots, dark, preview, langu
   })();
   const [guestName, setGuestName] = useState("");
   const [attending, setAttending] = useState<boolean | null>(null);
+  const [pax, setPax] = useState(1);
   const [slotId, setSlotId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -90,7 +95,7 @@ export function RsvpForm({ invitationId, themeColor, slots, dark, preview, langu
     if (attending && hasSlots && !slotId) { toast.error(t.errSlot); return; }
     setSubmitting(true);
     try {
-      await addRsvp(invitationId, { guestName, attending, message, slotId: slotId ?? undefined });
+      await addRsvp(invitationId, { guestName, attending, pax: attending ? pax : 0, message, slotId: slotId ?? undefined });
       setSubmitted(true);
       toast.success(t.successToast);
     } catch {
@@ -179,6 +184,32 @@ export function RsvpForm({ invitationId, themeColor, slots, dark, preview, langu
           </button>
         </div>
       </div>
+
+      {attending === true && (
+        <div className="space-y-2">
+          <Label className={textClass}>
+            {t.paxLabel} <span className="text-destructive">*</span>
+          </Label>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setPax((p) => Math.max(1, p - 1))}
+              className={cn("h-9 w-9 rounded-lg border-2 text-lg font-bold transition-all flex items-center justify-center",
+                dark ? "border-white/20 text-white hover:border-white/50" : "border-border hover:border-primary/50"
+              )}
+            >−</button>
+            <span className={cn("text-xl font-bold w-8 text-center", textClass)}>{pax}</span>
+            <button
+              type="button"
+              onClick={() => setPax((p) => Math.min(20, p + 1))}
+              className={cn("h-9 w-9 rounded-lg border-2 text-lg font-bold transition-all flex items-center justify-center",
+                dark ? "border-white/20 text-white hover:border-white/50" : "border-border hover:border-primary/50"
+              )}
+            >+</button>
+            <span className={cn("text-sm", mutedClass)}>{t.paxUnit}</span>
+          </div>
+        </div>
+      )}
 
       {attending === true && hasSlots && (
         <div className="space-y-2">
