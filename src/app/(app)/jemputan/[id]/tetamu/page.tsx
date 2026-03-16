@@ -10,7 +10,7 @@ import { GuestTable } from "@/components/guests/GuestTable";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ExternalLink, Copy } from "lucide-react";
+import { ArrowLeft, ExternalLink, Copy, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
 export default function GuestsPage({
@@ -86,6 +86,12 @@ export default function GuestsPage({
             <Link href={`/jemput/${invitation.slug}`} target="_blank">
               <ExternalLink className="h-3.5 w-3.5" />
               Lihat Jemputan
+            </Link>
+          </Button>
+          <Button variant="outline" size="sm" asChild className="gap-2">
+            <Link href={`/jemputan/${id}`}>
+              <Pencil className="h-3.5 w-3.5" />
+              Edit Jemputan
             </Link>
           </Button>
         </div>
