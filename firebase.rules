@@ -10,11 +10,13 @@ service cloud.firestore {
       allow update, delete: if request.auth != null
         && resource.data.ownerId == request.auth.uid;
 
-      // RSVPs: public read, anyone can create, no edits
+      // RSVPs: public read, anyone can create, owner can delete
       match /rsvps/{rsvpId} {
         allow read: if true;
         allow create: if true;
-        allow update, delete: if false;
+        allow update: if false;
+        allow delete: if request.auth != null
+          && get(/databases/$(database)/documents/invitations/$(invitationId)).data.ownerId == request.auth.uid;
       }
     }
 

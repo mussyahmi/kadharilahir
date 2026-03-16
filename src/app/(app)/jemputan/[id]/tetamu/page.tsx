@@ -100,7 +100,7 @@ export default function GuestsPage({
           {[1, 2, 3].map((i) => <Skeleton key={i} className="h-14 w-full" />)}
         </div>
       ) : (
-        <GuestTable guests={guests} />
+        <GuestTable guests={guests} invitationId={id} />
       )}
     </div>
   );

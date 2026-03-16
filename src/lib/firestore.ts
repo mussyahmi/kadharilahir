@@ -190,3 +190,7 @@ export function subscribeToRsvps(
     callback(items);
   });
 }
+
+export async function deleteRsvp(invitationId: string, rsvpId: string): Promise<void> {
+  await deleteDoc(doc(db, "invitations", invitationId, "rsvps", rsvpId));
+}

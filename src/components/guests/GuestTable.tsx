@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import type { Rsvp } from "@/types/invitation";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -9,12 +13,45 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDateShort } from "@/lib/utils";
+import { deleteRsvp } from "@/lib/firestore";
+import { Trash2, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 interface Props {
   guests: Rsvp[];
+  invitationId: string;
 }
 
-export function GuestTable({ guests }: Props) {
+function DeleteButton({ invitationId, rsvpId }: { invitationId: string; rsvpId: string }) {
+  const [loading, setLoading] = useState(false);
+
+  const handleDelete = async () => {
+    if (!confirm("Padam maklum balas ini?")) return;
+    setLoading(true);
+    try {
+      await deleteRsvp(invitationId, rsvpId);
+      toast.success("Maklum balas dipadam.");
+    } catch {
+      toast.error("Gagal memadam. Sila cuba lagi.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      className="h-7 w-7 text-muted-foreground hover:text-destructive"
+      onClick={handleDelete}
+      disabled={loading}
+    >
+      {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
+    </Button>
+  );
+}
+
+export function GuestTable({ guests, invitationId }: Props) {
   if (guests.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -37,6 +74,7 @@ export function GuestTable({ guests }: Props) {
               <TableHead>Kehadiran</TableHead>
               <TableHead>Mesej</TableHead>
               <TableHead>Tarikh Maklum Balas</TableHead>
+              <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -58,6 +96,9 @@ export function GuestTable({ guests }: Props) {
                 <TableCell className="text-muted-foreground text-sm">
                   {guest.submittedAt?.toDate ? formatDateShort(guest.submittedAt.toDate()) : "—"}
                 </TableCell>
+                <TableCell>
+                  <DeleteButton invitationId={invitationId} rsvpId={guest.id} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -70,13 +111,16 @@ export function GuestTable({ guests }: Props) {
           <div key={guest.id} className="rounded-lg border p-4 space-y-2">
             <div className="flex items-center justify-between">
               <span className="font-medium">{guest.guestName}</span>
-              <Badge variant={guest.attending ? "default" : "secondary"} className={
-                guest.attending
-                  ? "bg-green-100 text-green-700 dark:bg-green-950/30 dark:text-green-400 hover:bg-green-100"
-                  : "bg-red-100 text-red-700 dark:bg-red-950/30 dark:text-red-400 hover:bg-red-100"
-              }>
-                {guest.attending ? "Hadir" : "Tidak Hadir"}
-              </Badge>
+              <div className="flex items-center gap-2">
+                <Badge variant={guest.attending ? "default" : "secondary"} className={
+                  guest.attending
+                    ? "bg-green-100 text-green-700 dark:bg-green-950/30 dark:text-green-400 hover:bg-green-100"
+                    : "bg-red-100 text-red-700 dark:bg-red-950/30 dark:text-red-400 hover:bg-red-100"
+                }>
+                  {guest.attending ? "Hadir" : "Tidak Hadir"}
+                </Badge>
+                <DeleteButton invitationId={invitationId} rsvpId={guest.id} />
+              </div>
             </div>
             {guest.message && (
               <p className="text-sm text-muted-foreground">{guest.message}</p>
