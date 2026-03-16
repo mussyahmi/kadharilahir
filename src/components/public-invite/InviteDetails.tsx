@@ -121,7 +121,7 @@ export function InviteDetails({ invitation }: Props) {
       {/* Birthday age note */}
       {invitation.birthdayAge && (
         <p className="text-center text-xs text-muted-foreground pt-2">
-          Menyambut Hari Lahir Ke-{ordinal(invitation.birthdayAge)} 🎂
+          Menyambut Hari Lahir Ke-{invitation.birthdayAge} 🎂
         </p>
       )}
     </div>
