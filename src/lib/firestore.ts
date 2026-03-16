@@ -169,7 +169,7 @@ export function subscribeToInvitation(
 
 export async function addRsvp(
   invitationId: string,
-  data: { guestName: string; attending: boolean; message: string; slotId?: string }
+  data: { guestName: string; attending: boolean; pax: number; message: string; slotId?: string }
 ): Promise<void> {
   await addDoc(collection(db, "invitations", invitationId, "rsvps"), {
     ...data,
@@ -193,4 +193,12 @@ export function subscribeToRsvps(
 
 export async function deleteRsvp(invitationId: string, rsvpId: string): Promise<void> {
   await deleteDoc(doc(db, "invitations", invitationId, "rsvps", rsvpId));
+}
+
+export async function updateRsvp(
+  invitationId: string,
+  rsvpId: string,
+  data: { guestName: string; attending: boolean; pax: number; message: string }
+): Promise<void> {
+  await updateDoc(doc(db, "invitations", invitationId, "rsvps", rsvpId), data);
 }
