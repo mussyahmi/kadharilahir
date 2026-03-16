@@ -35,7 +35,13 @@ export class BirthdaySynth {
 
   private playNote(freq: number, startTime: number, duration: number) {
     const ctx = this.getCtx();
-    const { oscillatorType, attack, decay, sustain, release } = this.style;
+    const {
+      oscillatorType = "sine",
+      attack = 0.01,
+      decay = 0.1,
+      sustain = 0.5,
+      release = 0.1,
+    } = this.style;
 
     const osc = ctx.createOscillator();
     const env = ctx.createGain();
@@ -57,7 +63,7 @@ export class BirthdaySynth {
   }
 
   private scheduleMelody(startAt: number): number {
-    const { tempo } = this.style;
+    const tempo = this.style.tempo ?? 120;
     const beatDuration = 60 / tempo;
     let t = startAt;
 
