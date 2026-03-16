@@ -1,32 +1,59 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { PartyPopper, ArrowRight } from "lucide-react";
+import { CTAAuthButton } from "@/components/landing/CTAAuthButton";
+
+const SHAPES = [
+  { shape: "✦", t: "10%", l: "6%", s: 22, op: 0.2 },
+  { shape: "♥", t: "20%", l: "92%", s: 18, op: 0.18 },
+  { shape: "✦", t: "80%", l: "8%", s: 14, op: 0.15 },
+  { shape: "♥", t: "75%", l: "88%", s: 20, op: 0.18 },
+  { shape: "✦", t: "50%", l: "96%", s: 12, op: 0.12 },
+  { shape: "♥", t: "45%", l: "2%", s: 16, op: 0.15 },
+];
 
 export function CTASection() {
   return (
     <section className="py-16 md:py-24 px-4">
-      <div className="mx-auto max-w-3xl">
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 p-8 md:p-12 text-white text-center">
-          {/* Decorative circles */}
-          <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
+      <div className="mx-auto max-w-4xl">
+        <div
+          className="relative overflow-hidden rounded-3xl p-10 md:p-16 text-white text-center"
+          style={{
+            background: "linear-gradient(135deg, #be185d 0%, #7c3aed 50%, #1d4ed8 100%)",
+          }}
+        >
+          {/* Large blurred circle decorations */}
+          <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+          <div className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full bg-white/10 blur-2xl pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-white/5 blur-3xl pointer-events-none" />
+
+          {/* Floating symbols */}
+          {SHAPES.map((s, i) => (
+            <span
+              key={i}
+              className="absolute pointer-events-none select-none"
+              style={{ top: s.t, left: s.l, fontSize: s.s, opacity: s.op }}
+            >
+              {s.shape}
+            </span>
+          ))}
 
           <div className="relative z-10">
-            <PartyPopper className="h-10 w-10 mx-auto mb-4 opacity-90" />
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Sedia untuk Bermula?
-            </h2>
-            <p className="text-white/80 text-lg mb-8 max-w-xl mx-auto">
-              Cipta kad jemputan hari lahir digital pertama anda hari ini. Percuma, mudah, dan memukau.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button size="lg" className="h-12 px-8 bg-white text-purple-600 hover:bg-white/90 gap-2 text-base font-semibold" asChild>
-                <Link href="/daftar">
-                  Daftar Sekarang — Percuma
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 border border-white/20 px-4 py-1.5 text-sm font-semibold mb-6 backdrop-blur-sm">
+              ✦ KadHariLahir
             </div>
+
+            <h2 className="text-3xl md:text-5xl font-bold mb-5 leading-tight">
+              Cipta Jemputan Pertama{" "}
+              <span className="text-yellow-300">Anda Hari Ini</span>
+            </h2>
+
+            <p className="text-white/75 text-base md:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+              Bergabung dengan ibu bapa dan penganjur majlis yang menggunakan KadHariLahir untuk mencipta pengalaman jemputan yang tidak dilupakan.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <CTAAuthButton />
+            </div>
+
+            <p className="mt-6 text-white/50 text-sm">Sedia dalam minit • Mudah dikongsi melalui WhatsApp</p>
           </div>
         </div>
       </div>

@@ -7,12 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { CheckCircle2, Loader2, CalendarX } from "lucide-react";
 import { toast } from "sonner";
 import { cn, formatTime } from "@/lib/utils";
 
 const T = {
   ms: {
+    closed: "RSVP Ditutup",
+    closedDesc: "Tempoh maklum balas untuk majlis ini telah tamat.",
     errAttend: "Sila pilih sama ada anda akan hadir atau tidak.",
     errSlot: "Sila pilih slot masa kehadiran anda.",
     successToast: "Maklum balas anda telah dihantar!",
@@ -32,6 +34,8 @@ const T = {
     submit: "Hantar Maklum Balas",
   },
   en: {
+    closed: "RSVP Closed",
+    closedDesc: "The response period for this event has ended.",
     errAttend: "Please select whether you will attend or not.",
     errSlot: "Please select a time slot.",
     successToast: "Your response has been submitted!",
@@ -59,9 +63,17 @@ interface Props {
   dark?: boolean;
   preview?: boolean;
   language?: "ms" | "en";
+  /** Serialised Firestore Timestamp { seconds, nanoseconds } */
+  eventDate?: { seconds: number; nanoseconds: number } | null;
 }
 
-export function RsvpForm({ invitationId, themeColor, slots, dark, preview, language }: Props) {
+export function RsvpForm({ invitationId, themeColor, slots, dark, preview, language, eventDate }: Props) {
+  // Lock RSVP the day after the event
+  const isClosed = !preview && !!eventDate && (() => {
+    const eventDay = new Date(eventDate.seconds * 1000);
+    eventDay.setHours(23, 59, 59, 999);
+    return Date.now() > eventDay.getTime();
+  })();
   const [guestName, setGuestName] = useState("");
   const [attending, setAttending] = useState<boolean | null>(null);
   const [slotId, setSlotId] = useState<string | null>(null);
@@ -91,6 +103,18 @@ export function RsvpForm({ invitationId, themeColor, slots, dark, preview, langu
   const textClass = dark ? "text-white" : "";
   const mutedClass = dark ? "text-white/50" : "text-muted-foreground";
   const inputClass = dark ? "bg-white/10 border-white/20 text-white placeholder:text-white/40" : "";
+
+  if (isClosed) {
+    return (
+      <div className="flex flex-col items-center gap-3 py-8 text-center">
+        <div className="h-14 w-14 rounded-full flex items-center justify-center" style={{ backgroundColor: `${themeColor}15` }}>
+          <CalendarX className="h-7 w-7" style={{ color: themeColor }} />
+        </div>
+        <h3 className={cn("font-semibold text-base", textClass)}>{t.closed}</h3>
+        <p className={cn("text-sm max-w-xs", mutedClass)}>{t.closedDesc}</p>
+      </div>
+    );
+  }
 
   if (submitted) {
     return (

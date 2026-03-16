@@ -12,7 +12,7 @@ interface Props {
 
 export function InviteEntry({ birthdayPerson, color, hasSong, onEnter, language }: Props) {
   const label = language === "en" ? "Birthday Invitation" : "Jemputan Hari Lahir";
-  const openBtn = language === "en" ? (hasSong ? "🎵 Open Invitation" : "Open Invitation") : (hasSong ? "🎵 Buka Jemputan" : "Buka Jemputan");
+  const openBtn = language === "en" ? "Open Invitation" : "Buka Jemputan";
   const musicNote = language === "en" ? "Music will play" : "Muzik akan dimainkan";
   const [visible, setVisible] = useState(true);
   const [fading, setFading] = useState(false);

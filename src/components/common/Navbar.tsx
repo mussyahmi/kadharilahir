@@ -45,7 +45,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-sm">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 md:px-6 lg:px-8">
         {/* Logo */}
-        <Link href="/papan-pemuka" className="flex items-center gap-2 font-bold text-lg">
+        <Link href="/" className="flex items-center gap-2 font-bold text-lg">
           <PartyPopper className="h-5 w-5 text-pink-500" />
           <span>KadHariLahir</span>
         </Link>

@@ -13,6 +13,7 @@ import { BirthdaySong } from "@/components/public-invite/BirthdaySong";
 import { EventDetails } from "@/components/public-invite/EventDetails";
 import { InviteEntry } from "@/components/public-invite/InviteEntry";
 import { ParticleLayer } from "@/components/public-invite/ParticleLayer";
+import { RevealOnScroll } from "@/components/public-invite/RevealOnScroll";
 
 interface Props {
   invitation: Invitation;
@@ -78,6 +79,8 @@ export function TemplateCustomAI({ invitation, preview, darkMode }: Props) {
   const color = invitation.themeColor;
   const hasBg = !!invitation.backgroundImageUrl;
   const hasPhoto = !!invitation.coverPhotoUrl;
+
+  const liveEntered = !preview && entered;
   const hasLocation = invitation.locationLat !== undefined && invitation.locationLng !== undefined;
   const offsetX = invitation.photoOffsetX ?? 0;
   const offsetY = invitation.photoOffsetY ?? 0;
@@ -110,7 +113,11 @@ export function TemplateCustomAI({ invitation, preview, darkMode }: Props) {
       )}
 
       {/* Card — 2:3 portrait */}
-      <div className={sectionCls}>
+      <RevealOnScroll
+        className={sectionCls}
+        animation="scale-bloom 1.1s cubic-bezier(0.34,1.56,0.64,1) both"
+        active={liveEntered}
+      >
         <div className="relative w-full" style={{ paddingBottom: "150%" }}>
 
           {/* AI-generated background */}
@@ -148,6 +155,9 @@ export function TemplateCustomAI({ invitation, preview, darkMode }: Props) {
                 width: `${photoW}%`,
                 height: `${photoH}%`,
                 borderRadius: `${radius}%`,
+                ...(!preview && entered
+                  ? { animation: `photo-rise 1.1s cubic-bezier(0.34,1.56,0.64,1) 0.3s both, photo-float 4s ease-in-out 1.5s infinite` }
+                  : !preview ? { opacity: 0 } : {}),
               }}
             >
               <Image
@@ -178,49 +188,49 @@ export function TemplateCustomAI({ invitation, preview, darkMode }: Props) {
             </div>
           )}
         </div>
-      </div>
+      </RevealOnScroll>
 
       {/* Event details strip */}
-      <div className={`${sectionCls} px-5 pt-5`}>
+      <RevealOnScroll className={`${sectionCls} px-5 pt-5`} active={liveEntered}>
         <EventDetails invitation={invitation} color={color} />
-      </div>
+      </RevealOnScroll>
 
       {/* Message / Ucapan */}
       {invitation.message && (
-        <div className={`${sectionCls} px-5 pt-6`}>
+        <RevealOnScroll className={`${sectionCls} px-5 pt-6`} active={liveEntered}>
           <div
             className="rounded-2xl px-5 py-4 text-sm text-center leading-relaxed whitespace-pre-line"
             style={{ backgroundColor: `${color}10`, border: `1px solid ${color}25`, color }}
           >
             {invitation.message}
           </div>
-        </div>
+        </RevealOnScroll>
       )}
 
       {/* Navigation buttons */}
       {hasLocation && (
-        <div className={`${sectionCls} px-5 pt-5`}>
+        <RevealOnScroll className={`${sectionCls} px-5 pt-5`} active={liveEntered}>
           <p className="text-xs text-center text-muted-foreground mb-3 font-medium uppercase tracking-wide">{t.goToLocation}</p>
           <div className="grid grid-cols-2 gap-3">
             <WazeButton lat={invitation.locationLat!} lng={invitation.locationLng!} color={color} />
             <GoogleMapsButton lat={invitation.locationLat!} lng={invitation.locationLng!} color={color} />
           </div>
-        </div>
+        </RevealOnScroll>
       )}
 
       {/* Save to Calendar */}
-      <div className={`${sectionCls} px-5 pt-5`}>
+      <RevealOnScroll className={`${sectionCls} px-5 pt-5`} active={liveEntered}>
         <AddToCalendar invitation={invitation} color={color} language={lang} />
-      </div>
+      </RevealOnScroll>
 
       {/* RSVP Section */}
-      <div className={`${sectionCls} px-5 py-8 space-y-8`}>
+      <RevealOnScroll className={`${sectionCls} px-5 py-8 space-y-8`} active={liveEntered}>
         <div className="space-y-4">
           <div className="text-center">
             <h2 className="text-base font-bold">{t.rsvpTitle}</h2>
             <p className="text-xs text-muted-foreground mt-0.5">{t.rsvpDesc}</p>
           </div>
-          <RsvpForm invitationId={invitation.id} themeColor={color} slots={invitation.slots} dark={isDark} preview={preview} language={lang} />
+          <RsvpForm invitationId={invitation.id} themeColor={color} slots={invitation.slots} dark={isDark} preview={preview} language={lang} eventDate={invitation.date as unknown as { seconds: number; nanoseconds: number }} />
         </div>
 
         {/* Guest list */}
@@ -236,7 +246,7 @@ export function TemplateCustomAI({ invitation, preview, darkMode }: Props) {
             language={lang}
           />
         </div>
-      </div>
+      </RevealOnScroll>
 
       {!preview && (
         <BirthdaySong songId={invitation.songId} color={color} shouldPlay={entered} />
@@ -247,7 +257,7 @@ export function TemplateCustomAI({ invitation, preview, darkMode }: Props) {
           birthdayPerson={invitation.birthdayPerson}
           color={color}
           hasSong={hasSong}
-          onEnter={() => setEntered(true)}
+          onEnter={() => { window.scrollTo({ top: 0, behavior: "instant" }); setEntered(true); }}
           language={lang}
         />
       )}

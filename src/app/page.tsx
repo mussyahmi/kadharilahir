@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { PartyPopper } from "lucide-react";
+import pkg from "../../package.json";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { FeaturesSection } from "@/components/landing/FeaturesSection";
 import { HowItWorksSection } from "@/components/landing/HowItWorksSection";
 import { CTASection } from "@/components/landing/CTASection";
 import { Button } from "@/components/ui/button";
+import { NavAuthButtons } from "@/components/landing/NavAuthButtons";
+import { FooterAuthLinks } from "@/components/landing/FooterAuthLinks";
 
 export default function LandingPage() {
   return (
@@ -24,12 +27,7 @@ export default function LandingPage() {
             <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
               <a href="#cara-guna">Cara Guna</a>
             </Button>
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/log-masuk">Log Masuk</Link>
-            </Button>
-            <Button size="sm" className="bg-gradient-to-r from-pink-500 to-purple-600 border-0 text-white hover:from-pink-600 hover:to-purple-700" asChild>
-              <Link href="/daftar">Daftar</Link>
-            </Button>
+            <NavAuthButtons />
             <ThemeToggle />
           </nav>
         </div>
@@ -51,9 +49,9 @@ export default function LandingPage() {
           <p className="text-sm text-muted-foreground text-center">
             © 2025 KadHariLahir. Kad jemputan digital untuk rakyat Malaysia.
           </p>
+          <p className="text-xs text-muted-foreground/50">v{pkg.version}</p>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <Link href="/log-masuk" className="hover:underline">Log Masuk</Link>
-            <Link href="/daftar" className="hover:underline">Daftar</Link>
+            <FooterAuthLinks />
           </div>
         </div>
       </footer>
