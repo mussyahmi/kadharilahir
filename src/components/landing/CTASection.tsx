@@ -41,7 +41,7 @@ export function CTASection() {
             </div>
 
             <h2 className="text-3xl md:text-5xl font-bold mb-5 leading-tight">
-              Cipta Jemputan Pertama{" "}
+              Cipta Kad Jemputan Hari Lahir Digital Pertama{" "}
               <span className="text-yellow-300">Anda Hari Ini</span>
             </h2>
 
@@ -53,7 +53,7 @@ export function CTASection() {
               <CTAAuthButton />
             </div>
 
-            <p className="mt-6 text-white/50 text-sm">Sedia dalam minit • Mudah dikongsi melalui WhatsApp</p>
+            <p className="mt-6 text-white/50 text-sm">Sedia dalam beberapa minit • Mudah dikongsi melalui WhatsApp</p>
           </div>
         </div>
       </div>

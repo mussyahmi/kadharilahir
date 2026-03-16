@@ -26,7 +26,7 @@ const STEPS = [
     icon: BarChart3,
     number: "04",
     title: "Urus Kehadiran",
-    description: "Lihat maklum balas tetamu secara masa nyata dari papan pemuka anda.",
+    description: "Lihat maklum balas tetamu secara langsung dari papan pemuka anda.",
     color: "#10B981",
   },
 ];

@@ -24,7 +24,7 @@ const FEATURES = [
   },
   {
     icon: Users,
-    title: "RSVP Masa Nyata",
+    title: "RSVP Langsung",
     description: "Tetamu balas kehadiran terus di pautan jemputan. Anda nampak semua dari papan pemuka.",
     color: "#10B981",
     grad: "from-emerald-500/15 to-emerald-500/5",
