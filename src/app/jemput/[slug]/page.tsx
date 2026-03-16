@@ -43,5 +43,5 @@ export default async function InvitePage({ params }: Props) {
     songId: invitation.songId,
   };
 
-  return <TemplateCustomAI invitation={serialized} />;
+  return <TemplateCustomAI invitation={serialized as unknown as import("@/types/invitation").Invitation} />;
 }
