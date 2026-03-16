@@ -28,7 +28,7 @@ export class BirthdaySynth {
       this.ctx = new AudioContext();
       this.gainNode = this.ctx.createGain();
       this.gainNode.connect(this.ctx.destination);
-      this.gainNode.gain.value = this.style.volume;
+      this.gainNode.gain.value = this.style.volume ?? 0.5;
     }
     return this.ctx;
   }
