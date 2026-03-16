@@ -1,6 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useTheme } from "next-themes";
 import { Sparkles, Check } from "lucide-react";
 import { HeroAuthButtons } from "@/components/landing/HeroAuthButtons";
 
@@ -15,6 +17,11 @@ const FLOATS = [
 ];
 
 function MockCard() {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const src = mounted && resolvedTheme === "dark" ? "/hero-preview-dark.png" : "/hero-preview-light.png";
+
   return (
     <div
       className="relative w-full max-w-[260px] mx-auto select-none"
@@ -29,7 +36,7 @@ function MockCard() {
       {/* Real screenshot */}
       <div className="rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10">
         <Image
-          src="/hero-preview.png"
+          src={src}
           alt="Contoh kad jemputan hari lahir"
           width={520}
           height={900}
@@ -97,7 +104,7 @@ export function HeroSection() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-[3.4rem] font-bold leading-tight mb-5">
-              Jemputan Hari Lahir{" "}
+              Kad Jemputan Digital{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600">
                 yang Memukau
               </span>
