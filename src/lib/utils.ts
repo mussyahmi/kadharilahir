@@ -26,10 +26,13 @@ export function formatDate(date: Date | string): string {
 
 export function formatDateShort(date: Date | string): string {
   const d = typeof date === "string" ? new Date(date) : date;
-  return d.toLocaleDateString("ms-MY", {
+  return d.toLocaleString("ms-MY", {
     year: "numeric",
     month: "short",
     day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
   });
 }
 

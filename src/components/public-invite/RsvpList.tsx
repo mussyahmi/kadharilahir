@@ -7,8 +7,8 @@ import { CheckCircle2, XCircle, Users } from "lucide-react";
 import { Timestamp } from "firebase/firestore";
 
 const T = {
-  ms: { header: "Senarai Tetamu", attending: "hadir", notAttending: "tidak dapat hadir" },
-  en: { header: "Guest List", attending: "attending", notAttending: "can't make it" },
+  ms: { header: "Senarai Tetamu", attending: "hadir", notAttending: "tidak dapat hadir", totalPax: "jumlah pax" },
+  en: { header: "Guest List", attending: "attending", notAttending: "can't make it", totalPax: "total pax" },
 };
 
 interface Props {
@@ -40,6 +40,7 @@ export function RsvpList({ invitationId, themeColor, slots, preview, language }:
 
   const attending = data.filter((r) => r.attending);
   const notAttending = data.filter((r) => !r.attending);
+  const totalPax = attending.reduce((sum, r) => sum + (r.pax || 1), 0);
 
   if (data.length === 0) return null;
 
@@ -61,7 +62,7 @@ export function RsvpList({ invitationId, themeColor, slots, preview, language }:
         <div>
           <p className="text-sm font-semibold">{t.header}</p>
           <p className="text-xs text-muted-foreground">
-            {attending.length} {t.attending} · {notAttending.length} {t.notAttending}
+            {attending.length} {t.attending} · {notAttending.length} {t.notAttending} · {totalPax} {t.totalPax}
           </p>
         </div>
       </div>

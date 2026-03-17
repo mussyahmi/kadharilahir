@@ -10,8 +10,7 @@ import { GuestTable } from "@/components/guests/GuestTable";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, ExternalLink, Copy, Pencil } from "lucide-react";
-import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
 
 export default function GuestsPage({
   params,
@@ -24,15 +23,6 @@ export default function GuestsPage({
   const { user } = useAuthStore();
 
   const isOwner = user && invitation && user.uid === invitation.ownerId;
-  const inviteUrl = typeof window !== "undefined"
-    ? `${window.location.origin}/jemput/${invitation?.slug}`
-    : `/jemput/${invitation?.slug}`;
-
-  const copyLink = () => {
-    navigator.clipboard.writeText(inviteUrl);
-    toast.success("Pautan disalin!");
-  };
-
   if (invLoading) {
     return (
       <div className="space-y-6">
@@ -77,24 +67,6 @@ export default function GuestsPage({
           </div>
         </div>
 
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={copyLink} className="gap-2">
-            <Copy className="h-3.5 w-3.5" />
-            Salin Pautan
-          </Button>
-          <Button variant="outline" size="sm" asChild className="gap-2">
-            <Link href={`/jemput/${invitation.slug}`} target="_blank">
-              <ExternalLink className="h-3.5 w-3.5" />
-              Lihat Jemputan
-            </Link>
-          </Button>
-          <Button variant="outline" size="sm" asChild className="gap-2">
-            <Link href={`/jemputan/${id}`}>
-              <Pencil className="h-3.5 w-3.5" />
-              Edit Jemputan
-            </Link>
-          </Button>
-        </div>
       </div>
 
       {/* Stats */}
