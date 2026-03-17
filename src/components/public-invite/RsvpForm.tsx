@@ -95,7 +95,7 @@ export function RsvpForm({ invitationId, themeColor, slots, dark, preview, langu
     if (attending && hasSlots && !slotId) { toast.error(t.errSlot); return; }
     setSubmitting(true);
     try {
-      await addRsvp(invitationId, { guestName, attending, pax: attending ? pax : 0, message, slotId: slotId ?? undefined });
+      await addRsvp(invitationId, { guestName, attending, pax: attending ? pax : 0, message, ...(slotId ? { slotId } : {}) });
       setSubmitted(true);
       toast.success(t.successToast);
     } catch {
