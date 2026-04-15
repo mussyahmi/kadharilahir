@@ -70,7 +70,7 @@ export default function GuestsPage({
       </div>
 
       {/* Stats */}
-      {!guestsLoading && <RsvpStats guests={guests} />}
+      {!guestsLoading && <RsvpStats guests={guests} slots={invitation.slots} />}
 
       {/* Table */}
       {guestsLoading ? (
@@ -78,7 +78,7 @@ export default function GuestsPage({
           {[1, 2, 3].map((i) => <Skeleton key={i} className="h-14 w-full" />)}
         </div>
       ) : (
-        <GuestTable guests={guests} invitationId={id} />
+        <GuestTable guests={guests} invitationId={id} slots={invitation.slots} />
       )}
     </div>
   );

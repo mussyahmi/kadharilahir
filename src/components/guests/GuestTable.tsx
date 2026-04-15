@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Rsvp } from "@/types/invitation";
+import type { Rsvp, Slot } from "@/types/invitation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,7 +22,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatDateShort } from "@/lib/utils";
+import { formatDateShort, formatTime } from "@/lib/utils";
 import { deleteRsvp, updateRsvp } from "@/lib/firestore";
 import { Trash2, Loader2, Pencil, Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -30,6 +30,7 @@ import { toast } from "sonner";
 interface Props {
   guests: Rsvp[];
   invitationId: string;
+  slots?: Slot[];
 }
 
 function DeleteButton({ invitationId, rsvpId }: { invitationId: string; rsvpId: string }) {
@@ -64,17 +65,20 @@ function DeleteButton({ invitationId, rsvpId }: { invitationId: string; rsvpId: 
 function EditDialog({
   guest,
   invitationId,
+  slots,
   open,
   onClose,
 }: {
   guest: Rsvp;
   invitationId: string;
+  slots?: Slot[];
   open: boolean;
   onClose: () => void;
 }) {
   const [name, setName] = useState(guest.guestName);
   const [attending, setAttending] = useState(guest.attending);
   const [pax, setPax] = useState(guest.pax || 1);
+  const [slotId, setSlotId] = useState(guest.slotId ?? "");
   const [message, setMessage] = useState(guest.message || "");
   const [loading, setLoading] = useState(false);
 
@@ -85,6 +89,7 @@ function EditDialog({
         guestName: name.trim(),
         attending,
         pax: attending ? pax : 0,
+        slotId: attending && slotId ? slotId : undefined,
         message: message.trim(),
       });
       toast.success("Maklum balas dikemaskini.");
@@ -158,6 +163,26 @@ function EditDialog({
               </div>
             </div>
           )}
+          {attending && slots && slots.length > 0 && (
+            <div className="space-y-1.5">
+              <Label>Slot</Label>
+              <div className="flex flex-col gap-2">
+                {slots.map((slot) => (
+                  <Button
+                    key={slot.id}
+                    type="button"
+                    variant={slotId === slot.id ? "default" : "outline"}
+                    size="sm"
+                    className="justify-start"
+                    onClick={() => setSlotId(slot.id)}
+                  >
+                    <span className="font-medium">{slot.label}</span>
+                    <span className="ml-auto text-xs opacity-70">{formatTime(slot.startTime)} – {formatTime(slot.endTime)}</span>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="space-y-1.5">
             <Label>Mesej</Label>
             <Textarea
@@ -182,8 +207,9 @@ function EditDialog({
   );
 }
 
-export function GuestTable({ guests, invitationId }: Props) {
+export function GuestTable({ guests, invitationId, slots }: Props) {
   const [editGuest, setEditGuest] = useState<Rsvp | null>(null);
+  const slotMap = new Map(slots?.map((s) => [s.id, s]) ?? []);
 
   if (guests.length === 0) {
     return (
@@ -202,6 +228,7 @@ export function GuestTable({ guests, invitationId }: Props) {
         <EditDialog
           guest={editGuest}
           invitationId={invitationId}
+          slots={slots}
           open={!!editGuest}
           onClose={() => setEditGuest(null)}
         />
@@ -215,6 +242,7 @@ export function GuestTable({ guests, invitationId }: Props) {
               <TableHead>Nama Tetamu</TableHead>
               <TableHead>Kehadiran</TableHead>
               <TableHead>Pax</TableHead>
+              {slots && slots.length > 0 && <TableHead>Slot</TableHead>}
               <TableHead>Mesej</TableHead>
               <TableHead>Tarikh Maklum Balas</TableHead>
               <TableHead className="w-20" />
@@ -236,6 +264,11 @@ export function GuestTable({ guests, invitationId }: Props) {
                 <TableCell className="text-sm font-medium">
                   {guest.attending ? (guest.pax || 1) : "—"}
                 </TableCell>
+                {slots && slots.length > 0 && (
+                  <TableCell className="text-sm text-muted-foreground">
+                    {guest.slotId ? (slotMap.get(guest.slotId)?.label ?? "—") : "—"}
+                  </TableCell>
+                )}
                 <TableCell className="text-muted-foreground text-sm max-w-xs truncate">
                   {guest.message || "—"}
                 </TableCell>
@@ -293,9 +326,14 @@ export function GuestTable({ guests, invitationId }: Props) {
               <p className="text-xs text-muted-foreground">
                 {guest.submittedAt?.toDate ? formatDateShort(guest.submittedAt.toDate()) : ""}
               </p>
-              {guest.attending && (
-                <p className="text-xs text-muted-foreground">{guest.pax || 1} pax</p>
-              )}
+              <div className="flex items-center gap-2">
+                {slots && slots.length > 0 && guest.slotId && (
+                  <p className="text-xs text-muted-foreground">{slotMap.get(guest.slotId)?.label ?? ""}</p>
+                )}
+                {guest.attending && (
+                  <p className="text-xs text-muted-foreground">{guest.pax || 1} pax</p>
+                )}
+              </div>
             </div>
           </div>
         ))}
