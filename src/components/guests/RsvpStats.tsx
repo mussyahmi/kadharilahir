@@ -28,7 +28,7 @@ export function RsvpStats({ guests, slots }: Props) {
     <div className="space-y-3">
       <div className="grid grid-cols-3 gap-3">
         <Card>
-          <CardContent className="p-4 flex items-center gap-3">
+          <CardContent className="px-4 py-3 flex items-center gap-3">
             <div className="h-9 w-9 rounded-full bg-green-100 dark:bg-green-950/30 flex items-center justify-center shrink-0">
               <CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />
             </div>
@@ -39,7 +39,7 @@ export function RsvpStats({ guests, slots }: Props) {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center gap-3">
+          <CardContent className="px-4 py-3 flex items-center gap-3">
             <div className="h-9 w-9 rounded-full bg-red-100 dark:bg-red-950/30 flex items-center justify-center shrink-0">
               <XCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
             </div>
@@ -50,7 +50,7 @@ export function RsvpStats({ guests, slots }: Props) {
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="p-4 flex items-center gap-3">
+          <CardContent className="px-4 py-3 flex items-center gap-3">
             <div className="h-9 w-9 rounded-full bg-purple-100 dark:bg-purple-950/30 flex items-center justify-center shrink-0">
               <UserCheck className="h-4 w-4 text-purple-600 dark:text-purple-400" />
             </div>
